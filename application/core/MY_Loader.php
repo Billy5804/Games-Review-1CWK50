@@ -5,7 +5,7 @@
  * Date: 26/04/2019
  * Time: 13:37
  */
-class CustomLoader extends CI_Loader {
+class MY_Loader extends CI_Loader {
     public function template($template_name, $vars = array(), $return = FALSE)
     {
         if ($return):

@@ -1,0 +1,77 @@
+/* Using an '*' I select all possible elements and then remove all of their default margins, padding and borders */
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+/* I set the default font for the entire page incase I foreget to set another font
+I also set the background colour which is visible on laptops and desktops
+setting the position to relative allows children or grandchildren with 
+absolute positioning to base their position on the body rather than the window width and height */
+body {
+    font-family: Verdana;
+    background-color: #F2F2F2;
+    position: relative;
+    display: flex;
+}
+
+#chatSystem {
+    margin-right: 1%;
+    margin-bottom: 1%;
+}
+
+/* Overwrites the browser default selection style so that it is more dyslexic friendly */
+::selection {
+  background: #ffff00;
+  color: #000000;
+}
+
+/* Set the font for the heading that I may use to all be Arial */
+h1, h2, h3 {
+    font-family: Arial;
+    display: inline-block;
+}
+
+/* makes the articles that contains the pages content match the full height of the body
+but with a width of only 80% so that the content will be more centered in the page.
+The content inside the article will be centered and kept up against other child elements */
+main {
+    min-height:100vh;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    padding: 3.6em 2%;
+    display: inline-flex;
+    justify-content: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    min-width: 991px;
+}
+
+
+/* fills the width of the page and wraps around its contents height which is positioned in the center.
+Positioned at the bottom of the body element */
+footer  {
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    padding: .5rem 1rem;
+    height: 5rem;
+    box-sizing: border-box;
+}
+
+footer img {
+    height: 50px;
+}
+
+@media (min-width: 0px) and (max-width: 991px) {
+    main {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 3.6em 2%;
+        min-width: initial;
+    }
+}

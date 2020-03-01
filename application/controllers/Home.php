@@ -27,7 +27,7 @@ class Home extends CI_Controller{
 
 
         // Change this to whatever title you wish.
-        $data['title']       = 'Games Reviews';
+        $data['title'] = 'Games Reviews';
 
         // Condition checking if the user exists.
         if (!$userExists)
@@ -44,7 +44,7 @@ class Home extends CI_Controller{
         $data['result'] = $this->HomeModel->getGame();
         
         //Load the view and send the data accross.
-        $this->load->view('home', $data);
+        $this->load->template('Home', $data, false);
     }
 
     public function review($slug = NULL)
