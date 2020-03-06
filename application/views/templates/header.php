@@ -60,15 +60,16 @@
                 </li>';
             }
         ?>
+                <li class="nav-item">
+                <form class="form-inline form-background mw-50px mh-38px" id="searchForm" method="GET">
+                    <button type="submit" aria-hidden="true" tabindex="-1"></button>
+                    <button class="btn btn-outline-primary" type="toggle" id="searchToggle" onclick="toggleSearch(event, '<?php echo base_url("application/images/icons/"); ?>');"><img src="<?php echo base_url("application/images/icons/search.svg") ?>"></button>
+                    <input class="form-control invisible mw-0" type="search" placeholder="Search" aria-label="Search" id="searchBox" name="search">
+                    <button class="btn btn-outline-success invisible mw-0" type="submit" id="searchButton"><img src="<?php echo base_url("application/images/icons/search.svg"); ?>"></button>
+                </form>
+                </li>
             </ul>
         </div>
-        
-        <!-- <form class="form-inline form-background mw-50px mh-38px" id="searchForm" method="GET">
-        <button type="submit" aria-hidden="true" tabindex="-1"></button>
-            <button class="btn btn-outline-primary" type="toggle" id="searchToggle" onclick="toggleSearch(event, '<?php echo base_url("application/images/icons/"); ?>');"><img src="<?php echo base_url("application/images/icons/search.svg") ?>"></button>
-            <input class="form-control invisible mw-0" type="search" placeholder="Search" aria-label="Search" id="searchBox" name="search">
-            <button class="btn btn-outline-success invisible mw-0" type="submit" id="searchButton"><img src="<?php echo base_url("application/images/icons/search.svg"); ?>"></button>
-        </form> -->
     </nav>
     <main>
     <br>

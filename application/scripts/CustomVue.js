@@ -16,19 +16,21 @@ var comments = new Vue ({
             });
           });
       },
-      setList:function(thisFirstName, thisSurname) {
-          //Generate a list entry based on the parameter values we receive.
-          var postData = {'Firstname' : thisFirstName, 'Surname' : thisSurname}
-          // Log the data to the console during development.
-          console.log(postData)
-          // Send the post jQuery, the first parameter is the URL and the second is the data we wish to send
-          $.post("http://localhost/Laboratory16/index.php/set-users", postData)
-              .done(function(data){
-                  //When the data sends successfully, log the data in the browser
-                  console.log(data);
-                  // Add the data to the end of your list.
-                  body.users.push(postData);
-              })
+      postComment:function(id, username) {
+        //Generate a list entry based on the parameter values we receive.
+        const postComment = {'username':username,'comment':$('#userComment').val(),"commentTimestamp":"Just now"};
+        // Update comments on page to remove old 'Just now' comments
+        this.getComments(id); 
+        // Send the post jQuery, the first parameter is the URL and the second is the data we wish to send
+        $.post("http://localhost/Games-Review-1CWK50/postComment/" + id, postComment)
+          .done(function(data) {
+            // Add the data to the end of your list.
+            comments.comments.push(postComment);
+            // Clear the comment field
+            $('#userComment').val('')
+            //When the data sends successfully, inform the user
+            alert("Comment Posted");
+          });
       }
   }
 });

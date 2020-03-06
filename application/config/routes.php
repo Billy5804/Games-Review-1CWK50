@@ -55,6 +55,7 @@ $route['reviewedGames/(:any)'] = 'Home/gameReviews/$1';
 $route['reviewedGames/(:any)/(:any)'] = 'Home/review/$1/$2';
 $route['reviewedGames'] = 'Home/reviewedGames';
 $route['getComments/(:any)'] = 'Home/returnComments/$1';
+$route['postComment/(:any)'] = 'Home/sendComment/$1';
 $route['login'] = 'Home/login';
 $route['logout'] = 'Home/logout';
 $route['toggleDarkMode'] = 'Home/toggleDarkMode';

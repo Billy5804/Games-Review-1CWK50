@@ -8,8 +8,8 @@
     <?php
         foreach ($result as $row)
         {
-            $username = $row->username;
-            if(empty($username)) $username = '<small><del>DELETED USER</del></small>';
+            $commentPoster = $row->username;
+            if(empty($commentPoster)) $commentPoster = '<small><del>DELETED USER</del></small>';
             echo '<div class="card '.$bg.'">
                     <div class="row no-gutters">
                         <div class="col-auto containerFade">
@@ -24,13 +24,17 @@
                         <div class="col">
                             <div class="card-block px-2">
                                 <h4 class="card-title">'.$game.' Review</h4>
-                                <h5 class="card-text">By '.$username.'</h5>
+                                <h5 class="card-text">By '.$commentPoster.'</h5>
                                 <p class="card-text">'.($row->review).'</p>
                             </div>
                         </div>
-                    </div>
-                    <div v-on:click="getComments('.($row->reviewID).')" class="card-footer w-100 '.$textSecondary.'" id="comments">
+                    </div>';
+            if(boolval($row->enableComments)) {
+                echo '<div class="card-footer w-100 '.$textSecondary.'" id="comments">
                         Comments
+                        <hr size="100%">
+                        <textarea id="userComment" rows="3" class="form-control" placeholder="Write your comment here..."></textarea>
+                        <button v-on:click="postComment('.($row->reviewID).', \''.$username.'\')" class="btn btn-outline-success text-right">Post Comment</button>
                         <div v-for="comment in comments">
                             <hr size="100%">
                             <h6  class="float-right">{{comment.commentTimestamp}}</h6>
@@ -39,7 +43,14 @@
                         </div>
                     </div>
                 </div>';
-            break;
+            }
+            else {
+                echo '<div class="card-footer w-100 '.$textSecondary.'" id="comments">
+                        Comments Are Disabled For This Review.
+                    </div>
+                </div>';
+            }
+        break;
         }
     ?>
 

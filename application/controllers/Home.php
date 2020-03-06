@@ -285,14 +285,11 @@ class Home extends CI_Controller{
 		echo json_encode($results);
 	}
 
-	public function sendComment() {
+	public function sendComment($id = NULL) {
 		// Retrieve the input post from jQuery/VueJS
-		$newUsers = $this->input->post();
-
-		// Responde the data back to the webpage to ensure we received the correct info
-		print_r($newUsers);
-
-		// From here we would send the data onwards to a Model for database functions.
+		$comment = $this->input->post();
+        // From here we would send the data onwards to a Model for database functions.
+        $this->HomeModel->postComment($id, $comment['username'], $comment['comment']);
 	}
   
 }
