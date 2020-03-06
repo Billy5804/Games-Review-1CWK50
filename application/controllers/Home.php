@@ -16,50 +16,203 @@ class Home extends CI_Controller{
         $this->load->model('HomeModel');
         
         // Consider creating new Models for different functionality.
+        $this->load->library('image_lib');
+        $this->load->library('session');
     }
 
     public function index()
     {
-        // Check to see if the User exists on the homepage. You will need to change this to look up the existance of a cookie.
-        $userExists = '';
-
-        //Load data required for web page in array.
-
+        // Store user information
+        $data['user'] = $this->session->loggedInUser;
+        
+        if(!empty($data['user'])) {
+            $data['username'] = $this->session->username;
+        }
 
         // Change this to whatever title you wish.
         $data['title'] = 'Games Reviews';
 
-        // Condition checking if the user exists.
-        if (!$userExists)
-        {
-            //The user doesn't exist so change your page accordigly.
-        }
-        else
-        {
-            //The user does exist so change your page accordigly.
-        }
+        // active nav
+        $data['reviews'] = 'active';
 
-        
         // Get the data from our Home Model.
-        $data['result'] = $this->HomeModel->getGame();
+        $data['result'] = $this->HomeModel->getLatestReviews();
+
+        // prepare alert of logout confirmation if user has just logged out
+        if ($this->session->flashdata('logout')) {
+            $data['alert'] = '<script language="javascript">alert("Successfully Logged Out")</script>';
+        }
         
         //Load the view and send the data accross.
         $this->load->template('Home', $data, false);
     }
 
-    public function review($slug = NULL)
+    public function reviewedGames()
     {
-        //Get the data from the model based on the slug we have.
-        //Slugs match on to the knowledge around wildcard routes.
-        //More information on slugs can be found here: https://codeigniter.com/user_guide/tutorial/news_section.html
+        // Store user information
+        $data['user'] = $this->session->loggedInUser;
         
+        if(!empty($data['user'])) {
+            $data['username'] = $this->session->username;
+        }
+
+        // Change this to whatever title you wish.
+        $data['title'] = 'Reviewed Games';
+
+        // active nav
+        $data['games'] = 'active';
+        
+        // Get the data from our Home Model.
+        $data['result'] = $this->HomeModel->getReviewedGames();
+
+        // prepare alert of logout confirmation if user has just logged out
+        if ($this->session->flashdata('logout')) {
+            $data['alert'] = '<script language="javascript">alert("Successfully Logged Out")</script>';
+        }
+
+        //Load the view and send the data accross.
+        $this->load->template('reviewedGames', $data, false);
     }
 
-    //TODO: Create all other functions as required for further functionality (Comments, Login and so on.)
-    // Note: You can redirect to a page by using the redirect function as follows:
-    /*
-        //Redirect Home
-        redirect('http://localhost/games-review');
-    */
+    public function gameReviews($slug = NULL)
+    {
+        //Retrive data from model
+        $data['result'] = $this->HomeModel->getGameReviews($slug);
+
+        //Show 404 if no data found
+        if (empty($data['result'])) {
+                show_404();
+        }
+
+        // Get game title
+        foreach($data['result'] as $row) {
+            $game = $row->name;
+            break;
+        }
+
+        // Store user information
+        $data['user'] = $this->session->loggedInUser;
+        
+        if(!empty($data['user'])) {
+            $data['username'] = $this->session->username;
+        }
+
+        // Change this to whatever title you wish.
+        $data['title'] = $game.' Reviews';
+
+        // active nav
+        $data['reviews'] = 'active';
+
+        // prepare alert of logout confirmation if user has just logged out
+        if ($this->session->flashdata('logout')) {
+            $data['alert'] = '<script language="javascript">alert("Successfully Logged Out")</script>';
+        }
+
+        // Load the view
+        $this->load->template('home', $data, false);
+    }
+
+    public function review($slug = NULL, $id = null)
+    {
+        //Retrive data from model
+        $data['result'] = $this->HomeModel->getReview($id);
+
+        //Show 404 if no data found
+        if (empty($data['result'])) {
+                show_404();
+        }
+
+        // Get game title
+        foreach($data['result'] as $row) {
+            $game = $row->name;
+            break;
+        }
+
+        // Store user information
+        $data['user'] = $this->session->loggedInUser;
+        
+        if(!empty($data['user'])) {
+            $data['username'] = $this->session->username;
+        }
+
+        // Change this to whatever title you wish.
+        $data['title'] = $game.' Review';
+
+        // active nav
+        $data['reviews'] = 'active';
+
+        // prepare alert of logout confirmation if user has just logged out
+        if ($this->session->flashdata('logout')) {
+            $data['alert'] = '<script language="javascript">alert("Successfully Logged Out")</script>';
+        }
+
+        // Load the view
+        $this->load->template('review', $data, false);
+    }
+
+    public function login() {
+        $previousPage = $this->session->previousPage;
+        $this->session->previousPage = null;
+        if (!empty($this->input->post('currentPage'))) {
+            $previousPage = $this->input->post('currentPage');
+        }
+        $username = $this->input->post('inputUsername');
+        $password = $this->input->post('inputPassword');
+
+        if (!empty($username) && !empty($password)) {
+            $credentialsCheck = $this->HomeModel->checkCredentials($username, $password);
+            if (!empty($credentialsCheck)) {
+                foreach ($credentialsCheck as $row) {
+                    $this->session->darkmode = boolval($row->enableDarkMode);
+                    $this->session->admin = boolval($row->admin);
+                break;
+                }
+                $this->session->loggedInUser = true;
+                $this->session->username = $username;
+                redirect($previousPage);
+            }
+            else {
+                $data['alert'] = '<script language="javascript">alert("Log In Failed. Try Again")</script>';
+            }
+        }
+
+        $this->load->template('login', $data, false);
+
+        
+        $this->session->previousPage = $previousPage;
+    }
+
+    public function logout() {
+        $this->session->loggedInUser = null;
+        $this->session->username = null;
+        $previousPage = $this->input->post('currentPage');
+        $this->session->set_flashdata('logout', true);
+        if (!empty($previousPage)) {
+            redirect($previousPage);
+        }
+        else {
+            redirect(base_url());
+        }
+    }
+
+    public function returnComments($id = null) {
+		//Get the information from a model.
+        $results = $this->HomeModel->getComments($id);
+
+		//adapt the header so the response matches the JSON format.
+		header('Content-Type: application/json');
+
+		echo json_encode($results);
+	}
+
+	public function sendComment() {
+		// Retrieve the input post from jQuery/VueJS
+		$newUsers = $this->input->post();
+
+		// Responde the data back to the webpage to ensure we received the correct info
+		print_r($newUsers);
+
+		// From here we would send the data onwards to a Model for database functions.
+	}
   
 }

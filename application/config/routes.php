@@ -51,10 +51,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'Home';
 $route['index'] = 'Home/index';
-$route['review/(:any)'] = 'home/review/$1';
-$route['review'] = 'home/review';
-$route['Login'] = 'Login';
-$route['Logout'] = 'Home/Logout';
+$route['reviewedGames/(:any)'] = 'home/gameReviews/$1';
+$route['reviewedGames/(:any)/(:any)'] = 'home/review/$1/$2';
+$route['reviewedGames'] = 'home/reviewedGames';
+$route['getComments/(:any)'] = 'home/returnComments/$1';
+$route['login'] = 'home/login';
+$route['logout'] = 'Home/logout';
 $route['login/getUserDetails'] = 'Login/GetUserDetails';
 $route['account'] = 'Account';
 $route['response'] = 'Home/Comments';

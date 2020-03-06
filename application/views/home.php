@@ -1,24 +1,29 @@
 
-
-<?php
-// Manipulate the body CSS colour here.
-?>
-
 <div class="container">
+    <h2><b>Latest Reviews</b></h2>
     <div class="row">
         <?php
+        $this->load->library('image_lib');
         foreach ($result as $row)
         {
-            // These classes onlywork if you attach Bootstrap.
-            echo '<div class="card cardBodyWidth '.$cssBodyClass.'">';
-            // This is presuming you have a column in your database table called ReviewImage.
-            $thisImage = $row->ReviewImage;
-            // Look into the image properties library in CodeIgniter for more help on images: 
-            
+            $username = $row->username;
+            if(empty($username)) $username = '<small><del>DELETED USER</del></small>';
+
+            $route = $row->reviewID;
+            if (!empty($row->slug)) {
+                $route = 'reviewedGames/'.$row->slug.'/'.$route;
+            }
+            echo '<a href="'.$route.'" class="ml-auto mr-auto card cardBodyWidth '.$cssBodyClass.'" style="max-width: min-content; margin: 1%;">
+                    <img class="reviewImage card-img-top" src="'.base_url('application/images/'.str_replace(".jpg", ".jpg", $row->image)).'">
+                    <div class="card-body style="max-width: 300px;">
+                        <h5 class="card-title titleEllipsis">'.$row->name.' Review</h5>
+                        <h5 class="card-text authorEllipsis">By '.$username.'</h5>
+                        <p class="card-text previewEllipsis">'.$row->review.'</p>
+                    </div>
+                </a>';
         }
         ?>
     </div>
 
 </div>
-
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br>
