@@ -8,12 +8,12 @@
             </div>
         </div>
         <!-- Footer -->
-        <footer class="page-footer font-small bg-light">
+        <footer class="page-footer font-small <?php echo $headerFooter?>">
         
-            <img class="float-left" src="<?php echo base_url('application/images/Manchester_Metropolitan_University_logo.svg');?>"/>
+            <img class="float-left <?php echo $mode?>" src="<?php echo base_url('application/images/Manchester_Metropolitan_University_logo.svg');?>"/>
 
             <!-- Copyright -->
-            <div class="footer-copyright text-center py-3">
+            <div class="text-center <?php echo $textSecondary?> py-3">
                 <a href="#top" alt="A link that scrolls back to the page start.">©6G5Z2107 - Alex Royle - 18026718 - <?php echo date("Y"); ?></a>
             </div>
             <!-- Copyright -->

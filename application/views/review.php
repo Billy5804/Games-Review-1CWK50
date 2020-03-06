@@ -10,7 +10,7 @@
         {
             $username = $row->username;
             if(empty($username)) $username = '<small><del>DELETED USER</del></small>';
-            echo '<div class="card">
+            echo '<div class="card '.$bg.'">
                     <div class="row no-gutters">
                         <div class="col-auto containerFade">
                         <img class="reviewImage" src="'.base_url('application/images/'.str_replace(".jpg", ".jpg", $row->image)).'">
@@ -29,7 +29,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-on:click="getComments('.($row->reviewID).')" class="card-footer w-100 text-muted" id="comments">
+                    <div v-on:click="getComments('.($row->reviewID).')" class="card-footer w-100 '.$textSecondary.'" id="comments">
                         Comments
                         <div v-for="comment in comments">
                             <hr size="100%">

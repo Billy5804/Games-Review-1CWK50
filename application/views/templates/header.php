@@ -10,9 +10,9 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('application/css/styles.css');?>">
         <title><?php echo $title?></title>
     </head>
-<body>
+<body class="<?php echo $mode?>">
     <!-- These classes onlywork if you attach Bootstrap. -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-<?php echo $mode ?> <?php echo $headerFooter ?> fixed-top">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -21,8 +21,8 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item <?php echo $home ?>">
-                    <a class="nav-link" href="<?php echo base_url(); ?>">Home<span class="sr-only">(current)</span></a>
+                <li class="nav-item <?php echo $reviews ?>">
+                    <a class="nav-link" href="<?php echo base_url(); ?>">Reviews<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item <?php echo $games ?>">
                     <a class="nav-link" href="<?php echo base_url('reviewedGames/'); ?>">Games<span class="sr-only">(current)</span></a>
@@ -34,8 +34,14 @@
                         '.$username.'
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" id="toggleDarkMode" href="#">Dark Mode</a>
-                        <a class="dropdown-item" id="toggleAdmin" href="#">Admin</a>
+                        <form class="dropdown-item" action="'.base_url('/toggleDarkMode').'" method="POST">
+                            <button>'.$menuText.'</button>
+                            <input type="hidden" name="currentPage" value="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'">
+                        </form>
+                        <form class="dropdown-item" action="'.base_url('toggleAdmin').'" method="POST">
+                            <button>'.$adminText.'</button>
+                            <input type="hidden" name="currentPage" value="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'">
+                        </form>
                         <div class="dropdown-divider"></div>
                         <form class="dropdown-item" action="'.base_url('logout').'" method="POST">
                             <button>Log Out</button>
@@ -46,7 +52,7 @@
             }
             else {
                 echo '
-                <li class="nav-item">
+                <li class="nav-item '.$login.' ?>">
                     <form class="nav-link" action="'.base_url('login').'" method="POST">
                         <button>Log In</button>
                         <input type="hidden" name="currentPage" value="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'">

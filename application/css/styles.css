@@ -17,8 +17,7 @@ body {
 }
 
 #chatSystem {
-    margin-right: 1%;
-    margin-bottom: 1%;
+    margin: 0.5rem 1rem;
 }
 
 /* Overwrites the browser default selection style so that it is more dyslexic friendly */
@@ -83,13 +82,14 @@ footer  {
     bottom: 0;
     position: absolute;
     width: 100%;
-    padding: .5rem 1rem;
-    height: 5rem;
+    padding: 0 1rem;
     box-sizing: border-box;
+    max-height: 56px;
 }
 
 footer img {
-    height: 50px;
+    padding: .5rem 0;
+    height: 56px;
 }
 
 .overlayFade {
@@ -193,6 +193,28 @@ form.nav-link button {
     -webkit-line-clamp: 3; /* number of lines to show */
 }
 
+.card a, footer a {
+    color:inherit !important;
+    text-decoration:none;
+}
+
+/* Dark Mode */
+img.dark {
+    filter: invert(100%) sepia(5%) saturate(6860%) hue-rotate(311deg) brightness(114%) contrast(104%);
+}
+
+body.dark {
+    background-color: #0d0d0d;
+}
+
+body.dark main {
+    background-color: #000;
+}
+
+body.dark .overlayFade {
+    background-color: rgb(27, 27, 27);
+    color: white;
+}
 
 @media (min-width: 0px) and (max-width: 991px) {
     main {

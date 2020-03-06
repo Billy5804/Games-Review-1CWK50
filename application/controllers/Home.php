@@ -11,13 +11,15 @@ class Home extends CI_Controller{
         $this->load->helper('url_helper');
         $this->load->helper('html');
         $this->load->helper('cookie');
+        $this->load->helper('my_helper');
+        
+        $this->load->library('session');
 
         // Load in your Models below.
         $this->load->model('HomeModel');
         
         // Consider creating new Models for different functionality.
         $this->load->library('image_lib');
-        $this->load->library('session');
     }
 
     public function index()
@@ -27,7 +29,12 @@ class Home extends CI_Controller{
         
         if(!empty($data['user'])) {
             $data['username'] = $this->session->username;
+            $data['adminText'] = 'Enable Admin';
+            if ($this->session->admin) $data['adminText'] = 'Disable Admin';
         }
+
+        // Adjust page colours for dark/light mode
+        $data = array_merge($data,getColours($this->session->darkmode));
 
         // Change this to whatever title you wish.
         $data['title'] = 'Games Reviews';
@@ -54,7 +61,12 @@ class Home extends CI_Controller{
         
         if(!empty($data['user'])) {
             $data['username'] = $this->session->username;
+            $data['adminText'] = 'Enable Admin';
+            if ($this->session->admin) $data['adminText'] = 'Disable Admin';
         }
+
+        // Adjust page colours for dark/light mode
+        $data = array_merge($data,getColours($this->session->darkmode));
 
         // Change this to whatever title you wish.
         $data['title'] = 'Reviewed Games';
@@ -95,13 +107,18 @@ class Home extends CI_Controller{
         
         if(!empty($data['user'])) {
             $data['username'] = $this->session->username;
+            $data['adminText'] = 'Enable Admin';
+            if ($this->session->admin) $data['adminText'] = 'Disable Admin';
         }
+
+        // Adjust page colours for dark/light mode
+        $data = array_merge($data,getColours($this->session->darkmode));
 
         // Change this to whatever title you wish.
         $data['title'] = $game.' Reviews';
 
         // active nav
-        $data['reviews'] = 'active';
+        $data['games'] = 'active';
 
         // prepare alert of logout confirmation if user has just logged out
         if ($this->session->flashdata('logout')) {
@@ -133,7 +150,12 @@ class Home extends CI_Controller{
         
         if(!empty($data['user'])) {
             $data['username'] = $this->session->username;
+            $data['adminText'] = 'Enable Admin';
+            if ($this->session->admin) $data['adminText'] = 'Disable Admin';
         }
+
+        // Adjust page colours for dark/light mode
+        $data = array_merge($data,getColours($this->session->darkmode));
 
         // Change this to whatever title you wish.
         $data['title'] = $game.' Review';
@@ -151,6 +173,9 @@ class Home extends CI_Controller{
     }
 
     public function login() {
+        if ($this->session->loggedInUser) {
+            redirect(base_url());
+        }
         $previousPage = $this->session->previousPage;
         $this->session->previousPage = null;
         if (!empty($this->input->post('currentPage'))) {
@@ -159,12 +184,14 @@ class Home extends CI_Controller{
         $username = $this->input->post('inputUsername');
         $password = $this->input->post('inputPassword');
 
+        $data = [];
+
         if (!empty($username) && !empty($password)) {
             $credentialsCheck = $this->HomeModel->checkCredentials($username, $password);
             if (!empty($credentialsCheck)) {
                 foreach ($credentialsCheck as $row) {
                     $this->session->darkmode = boolval($row->enableDarkMode);
-                    $this->session->admin = boolval($row->admin);
+                    $this->session->admin = boolval($row->isAdmin);
                 break;
                 }
                 $this->session->loggedInUser = true;
@@ -176,6 +203,15 @@ class Home extends CI_Controller{
             }
         }
 
+        // Adjust page colours for dark/light mode
+        $data = array_merge($data,getColours($this->session->darkmode));
+
+        // Change this to whatever title you wish.
+        $data['title'] = 'Log In';
+
+        // active nav
+        $data['login'] = 'active';
+
         $this->load->template('login', $data, false);
 
         
@@ -185,8 +221,52 @@ class Home extends CI_Controller{
     public function logout() {
         $this->session->loggedInUser = null;
         $this->session->username = null;
+        $this->session->darkmode = null;
+        $this->session->admin = null;
         $previousPage = $this->input->post('currentPage');
         $this->session->set_flashdata('logout', true);
+        if (!empty($previousPage)) {
+            redirect($previousPage);
+        }
+        else {
+            redirect(base_url());
+        }
+    }
+
+    public function toggleDarkMode() {
+        if ($this->session->loggedInUser) {
+            $username = $this->session->username;
+            if ($this->session->darkmode) {
+                $this->HomeModel->setDarkmode(0, $username);
+                $this->session->darkmode = false;
+            }
+            else {
+                $this->HomeModel->setDarkmode(1, $username);
+                $this->session->darkmode = true;
+            }
+        }
+        $previousPage = $this->input->post('currentPage');
+        if (!empty($previousPage)) {
+            redirect($previousPage);
+        }
+        else {
+            redirect(base_url());
+        }
+    }
+
+    public function toggleAdmin() {
+        if ($this->session->loggedInUser) {
+            $username = $this->session->username;
+            if ($this->session->admin) {
+                $this->HomeModel->setAdmin(0, $username);
+                $this->session->admin = false;
+            }
+            else {
+                $this->HomeModel->setAdmin(1, $username);
+                $this->session->admin = true;
+            }
+        }
+        $previousPage = $this->input->post('currentPage');
         if (!empty($previousPage)) {
             redirect($previousPage);
         }
