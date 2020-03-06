@@ -20,14 +20,14 @@ class HomeModel extends CI_Model{
     public function getGameReviews($slug)
     {
         // You can use the select, from, and where functions to simplify this as seen in Week 13.
-        $query = $this->db->query("SELECT reviewID, ar.image, name, review, (SELECT username FROM users WHERE userID = ar.reviewerID) AS username FROM activereviews ar JOIN games USING(gameID) WHERE slug = '".$slug."' ORDER BY reviewTimestamp;");
+        $query = $this->db->query("SELECT reviewID, image, name, review, (SELECT username FROM users WHERE userID = ar.reviewerID) AS username FROM activereviews ar JOIN games USING(gameID) WHERE slug = '".$slug."' ORDER BY reviewTimestamp;");
         return $query->result();
     }
 
     public function getLatestReviews()
     {
         // You can use the select, from, and where functions to simplify this as seen in Week 13.
-        $query = $this->db->query("SELECT reviewerID, reviewID, slug, ar.image, name, review, (SELECT username FROM users WHERE userID = ar.reviewerID) AS username FROM activereviews ar JOIN games USING(gameID) ORDER BY reviewTimestamp;");
+        $query = $this->db->query("SELECT reviewerID, reviewID, slug, image, name, review, (SELECT username FROM users WHERE userID = ar.reviewerID) AS username FROM activereviews ar JOIN games USING(gameID) ORDER BY reviewTimestamp;");
         return $query->result();
     }
 
@@ -35,7 +35,7 @@ class HomeModel extends CI_Model{
     public function getReview($id = 0)
     {
         // You can use the select, from, and where functions to simplify this as seen in Week 13.
-        $query = $this->db->query("SELECT ar.image, name, review, (SELECT username FROM users WHERE userID = ar.reviewerID) AS username, blurb, reviewID FROM activereviews ar JOIN games USING(gameID) WHERE reviewID = ".$id.";");
+        $query = $this->db->query("SELECT image, name, review, (SELECT username FROM users WHERE userID = ar.reviewerID) AS username, blurb, reviewID FROM activereviews ar JOIN games USING(gameID) WHERE reviewID = ".$id.";");
         return $query->result();
     }
 

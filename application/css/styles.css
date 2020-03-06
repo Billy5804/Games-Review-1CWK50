@@ -85,6 +85,8 @@ footer  {
     padding: 0 1rem;
     box-sizing: border-box;
     max-height: 56px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 footer img {
