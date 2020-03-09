@@ -29,24 +29,30 @@
                             </div>
                         </div>
                     </div>';
-            if(boolval($row->enableComments)) {
+            if(boolval($row->enableComments) && $user) {
                 echo '<div class="card-footer w-100 '.$textSecondary.'" id="comments">
                         Comments
                         <hr size="100%">
                         <textarea id="userComment" rows="3" class="form-control" placeholder="Write your comment here..."></textarea>
-                        <button v-on:click="postComment('.($row->reviewID).', \''.$username.'\')" class="btn btn-outline-success text-right">Post Comment</button>
+                        <button v-on:click="postComment(\''.$username.'\')" class="btn btn-outline-success text-right">Post Comment</button>
                         <div v-for="comment in comments">
                             <hr size="100%">
-                            <h6  class="float-right">{{comment.commentTimestamp}}</h6>
+                            <h6  class="float-right">{{comment.timeSince}}</h6>
                             <h4 v-html="comment.username"></h4>
                             <p>{{comment.comment}}</p>
                         </div>
                     </div>
                 </div>';
             }
-            else {
+            elseif(!boolval($row->enableComments)) {
                 echo '<div class="card-footer w-100 '.$textSecondary.'" id="comments">
                         Comments Are Disabled For This Review.
+                    </div>
+                </div>';
+            }
+            else {
+                echo '<div class="card-footer w-100 '.$textSecondary.'" id="comments">
+                        You Must Be Logged In To Post A Comment.
                     </div>
                 </div>';
             }

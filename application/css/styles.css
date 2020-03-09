@@ -18,6 +18,29 @@ body {
 
 #chatSystem {
     margin: 0.5rem 1rem;
+    border-radius: .5rem;
+    padding: 10px; 
+    width: 330px;
+    box-shadow: 1px 1px 2px rgb(45, 80, 45);
+    transition: width 0.3s, height 0.4s;
+}
+
+#chatArea {
+    height: 450px;
+    
+    transition: width 0.3s, height 0.4s;
+}
+
+#chatSystem.invisible #chatArea {
+    height: 0;
+}
+
+#chatSystem.invisible {
+    visibility: visible;
+    max-width: 0;
+    max-height: 0;
+    width: 0;
+    height: 0;
 }
 
 /* Overwrites the browser default selection style so that it is more dyslexic friendly */
@@ -200,10 +223,21 @@ form.nav-link button {
     text-decoration:none;
 }
 
-textarea.form-control {
+#userCoomment {
     border-radius: .5rem;
     margin-bottom: .5rem;
 }
+
+#message {
+    width: 243.44998779px;
+    border-radius: .5rem;
+}
+
+#chatButton {
+    margin: 0.5rem 1rem;
+    left: initial;
+}
+
 
 /* Dark Mode */
 img.dark {
@@ -239,5 +273,11 @@ body.dark textarea.form-control {
     form.nav-link button {
         padding: .5rem 0;
         text-align: left;
+    }
+}
+
+@media (min-width: 0px) and (max-width: 640px) {
+    footer a{
+        visibility: hidden;
     }
 }

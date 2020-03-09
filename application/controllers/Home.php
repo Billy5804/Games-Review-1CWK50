@@ -13,13 +13,13 @@ class Home extends CI_Controller{
         $this->load->helper('cookie');
         $this->load->helper('my_helper');
         
+        // 
         $this->load->library('session');
 
         // Load in your Models below.
-        $this->load->model('HomeModel');
-        
-        // Consider creating new Models for different functionality.
-        $this->load->library('image_lib');
+        $this->load->model('ReviewsModel');
+        $this->load->model('CommentsModel');
+        $this->load->model('UserModel');
     }
 
     public function index()
@@ -43,11 +43,11 @@ class Home extends CI_Controller{
         $data['reviews'] = 'active';
 
         // Get the data from our Home Model.
-        $data['result'] = $this->HomeModel->getLatestReviews();
+        $data['result'] = $this->ReviewsModel->getLatestReviews();
 
         // prepare alert of logout confirmation if user has just logged out
         if ($this->session->flashdata('logout')) {
-            $data['alert'] = '<script language="javascript">alert("Successfully Logged Out")</script>';
+            $data['alert'] = '<script language="javascript">setTimeout(function(){alert("Successfully Logged Out"); document.currentScript.remove();}, 0.2)</script>';
         }
         
         //Load the view and send the data accross.
@@ -75,11 +75,11 @@ class Home extends CI_Controller{
         $data['games'] = 'active';
         
         // Get the data from our Home Model.
-        $data['result'] = $this->HomeModel->getReviewedGames();
+        $data['result'] = $this->ReviewsModel->getReviewedGames();
 
         // prepare alert of logout confirmation if user has just logged out
         if ($this->session->flashdata('logout')) {
-            $data['alert'] = '<script language="javascript">alert("Successfully Logged Out")</script>';
+            $data['alert'] = '<script language="javascript">setTimeout(function(){alert("Successfully Logged Out"); document.currentScript.remove();}, 0.2)</script>';
         }
 
         //Load the view and send the data accross.
@@ -89,7 +89,7 @@ class Home extends CI_Controller{
     public function gameReviews($slug = NULL)
     {
         //Retrive data from model
-        $data['result'] = $this->HomeModel->getGameReviews($slug);
+        $data['result'] = $this->ReviewsModel->getGameReviews($slug);
 
         //Show 404 if no data found
         if (empty($data['result'])) {
@@ -122,7 +122,7 @@ class Home extends CI_Controller{
 
         // prepare alert of logout confirmation if user has just logged out
         if ($this->session->flashdata('logout')) {
-            $data['alert'] = '<script language="javascript">alert("Successfully Logged Out")</script>';
+            $data['alert'] = '<script language="javascript">setTimeout(function(){alert("Successfully Logged Out"); document.currentScript.remove();}, 0.2)</script>';
         }
 
         // Load the view
@@ -132,7 +132,7 @@ class Home extends CI_Controller{
     public function review($slug = NULL, $id = null)
     {
         //Retrive data from model
-        $data['result'] = $this->HomeModel->getReview($id);
+        $data['result'] = $this->ReviewsModel->getReview($id);
 
         //Show 404 if no data found
         if (empty($data['result'])) {
@@ -165,7 +165,7 @@ class Home extends CI_Controller{
 
         // prepare alert of logout confirmation if user has just logged out
         if ($this->session->flashdata('logout')) {
-            $data['alert'] = '<script language="javascript">alert("Successfully Logged Out")</script>';
+            $data['alert'] = '<script language="javascript">setTimeout(function(){alert("Successfully Logged Out"); document.currentScript.remove();}, 0.2)</script>';
         }
 
         // Load the view
@@ -187,7 +187,7 @@ class Home extends CI_Controller{
         $data = [];
 
         if (!empty($username) && !empty($password)) {
-            $credentialsCheck = $this->HomeModel->checkCredentials($username, $password);
+            $credentialsCheck = $this->UserModel->checkCredentials($username, $password);
             if (!empty($credentialsCheck)) {
                 foreach ($credentialsCheck as $row) {
                     $this->session->darkmode = boolval($row->enableDarkMode);
@@ -199,7 +199,7 @@ class Home extends CI_Controller{
                 redirect($previousPage);
             }
             else {
-                $data['alert'] = '<script language="javascript">alert("Log In Failed. Try Again")</script>';
+                $data['alert'] = '<script language="javascript">setTimeout(function(){alert("Log In Failed. Try Again"); document.currentScript.remove();}, 0.2)</script>';
             }
         }
 
@@ -237,11 +237,11 @@ class Home extends CI_Controller{
         if ($this->session->loggedInUser) {
             $username = $this->session->username;
             if ($this->session->darkmode) {
-                $this->HomeModel->setDarkmode(0, $username);
+                $this->UserModel->setDarkmode(0, $username);
                 $this->session->darkmode = false;
             }
             else {
-                $this->HomeModel->setDarkmode(1, $username);
+                $this->UserModel->setDarkmode(1, $username);
                 $this->session->darkmode = true;
             }
         }
@@ -258,11 +258,11 @@ class Home extends CI_Controller{
         if ($this->session->loggedInUser) {
             $username = $this->session->username;
             if ($this->session->admin) {
-                $this->HomeModel->setAdmin(0, $username);
+                $this->UserModel->setAdmin(0, $username);
                 $this->session->admin = false;
             }
             else {
-                $this->HomeModel->setAdmin(1, $username);
+                $this->UserModel->setAdmin(1, $username);
                 $this->session->admin = true;
             }
         }
@@ -277,7 +277,7 @@ class Home extends CI_Controller{
 
     public function returnComments($id = null) {
 		//Get the information from a model.
-        $results = $this->HomeModel->getComments($id);
+        $results = $this->CommentsModel->getComments($id);
 
 		//adapt the header so the response matches the JSON format.
 		header('Content-Type: application/json');
@@ -289,7 +289,7 @@ class Home extends CI_Controller{
 		// Retrieve the input post from jQuery/VueJS
 		$comment = $this->input->post();
         // From here we would send the data onwards to a Model for database functions.
-        $this->HomeModel->postComment($id, $comment['username'], $comment['comment']);
+        $this->CommentsModel->postComment($id, $comment['username'], $comment['comment']);
 	}
   
 }

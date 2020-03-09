@@ -20,7 +20,24 @@ function handler (req, res) {
         });
 }
 
+// Create an event handler that monitors new connections.
+io.on('connection', function (socket) {
+    // Print a message on the terminal when a new user connects.
+    console.log("Someone has connected!");
 
-io.on('connection', function(socket){
-//   Code your server here...
+    // When we recieve a message from the client...
+    socket.on("client message", function(data) {
+       
+        // Print it onto the terminal
+        console.log("Client message recieved: " + data);
+
+        // Send the same message back to the client, but with a different namespace.
+        io.emit("server message", data);
+    });
+});
+
+// Run our Node.js / Socket.IO server on port 8080
+app.listen(8080, function() {
+    // Print a messaage om the terminal when the server starts.
+    console.log("Server started.");
 });
