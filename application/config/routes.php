@@ -60,5 +60,6 @@ $route['login'] = 'Home/login';
 $route['logout'] = 'Home/logout';
 $route['toggleDarkMode'] = 'Home/toggleDarkMode';
 $route['toggleAdmin'] = 'Home/toggleAdmin';
+$route['getUserDetails'] = 'Home/userDetails';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

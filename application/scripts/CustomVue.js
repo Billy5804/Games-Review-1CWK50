@@ -17,7 +17,7 @@ $(document).ready(function() {
               data.forEach(element => {
                 if (element.username === null) element.username = '<small><del>DELETED USER</del></small>';
                 element.timeSince = elapsedTime(element.commentTimestamp);
-                comments.comments.push(element);
+                comments.comments.unshift(element);
               });
             });
         },
@@ -31,8 +31,9 @@ $(document).ready(function() {
           // Send the post jQuery, the first parameter is the URL and the second is the data we wish to send
           $.post("http://localhost/Games-Review-1CWK50/postComment/" + this.id, postComment)
             .done(function(data) {
+              console.log(postComment);
               // Add the data to the end of your list.
-              comments.comments.push(postComment);
+              comments.comments.unshift(postComment);
               // Update Comment Times
               for (let index = 0; index < comments.comments.length; index++) {
                 comments.comments[index].timeSince = elapsedTime(comments.comments[index].commentTimestamp);

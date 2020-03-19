@@ -1,3 +1,13 @@
+function getBaseUrl() {
+    return window.location.protocol + "//" + window.location.host + "/Games-Review-1CWK50/";
+}
+
+function getUserDetails() {
+    return fetch(getBaseUrl()+"getUserDetails")
+    .then( res => res.json() )
+    .then( data => {return data} )
+}
+
 function toggleSearch(e, imagePath) {
     e = e || window.event;
     e.preventDefault();
@@ -57,4 +67,27 @@ function elapsedTime(timestamp) {
     else {
         return ('Time is in the future')
     }
+}
+
+function setCookie(cookieName, cookieValue, validDays) {
+    const milliseconds = validDays * 24 * 60 * 60 * 1000;
+    let date = new Date();
+    date.setTime(date.getTime() + milliseconds);
+    const expires = date.toUTCString();
+    document.cookie = encodeURIComponent(cookieName) + "=" + encodeURIComponent(cookieValue) + "; expires=" + expires + "; path=/";
+}
+
+function getCookie(cookieName) {
+    cookieName = encodeURIComponent(cookieName) + "=";
+    const cookies = document.cookie.split(';');
+    return $.map(cookies, function (cookie) {
+        cookie = cookie.replace(/^ +/gm, '');
+        if (cookie.substring(0, cookieName.length) === cookieName) {
+            return decodeURIComponent(cookie.substring(cookieName.length, cookie.length));
+        }
+    })[0];
+}
+
+function clearCookie(cookieName) {
+    setCookie(cookieName, '', -1);
 }

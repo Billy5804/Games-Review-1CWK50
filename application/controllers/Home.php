@@ -233,6 +233,21 @@ class Home extends CI_Controller{
         }
     }
 
+    public function userDetails() {
+        $loggedIn = $this->session->loggedInUser;
+        $username = $this->session->username;
+        $admin = $this->session->admin;
+        
+        header('Content-Type: application/json'); 
+
+        if ($loggedIn) {
+            $userDetails = array('loggedIn' => $loggedIn, 'username' => $username, 'admin' => $admin);
+            //return the json response :
+            echo json_encode($userDetails, true);
+        }
+        else echo json_encode(array('loggedIn' => false, 'username' => "Unregistered user"));
+    }
+
     public function toggleDarkMode() {
         if ($this->session->loggedInUser) {
             $username = $this->session->username;

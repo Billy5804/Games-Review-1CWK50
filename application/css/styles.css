@@ -27,7 +27,9 @@ body {
 
 #chatArea {
     height: 450px;
-    
+    width: -WEBKIT-FILL-AVAILABLE;
+    padding-bottom: 0.25rem;
+    overflow-wrap: break-word;
     transition: width 0.3s, height 0.4s;
 }
 
@@ -36,7 +38,7 @@ body {
 }
 
 #chatSystem.invisible {
-    visibility: visible;
+    visibility: hidden;
     max-width: 0;
     max-height: 0;
     width: 0;

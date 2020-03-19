@@ -2,8 +2,9 @@
         <!-- This section needs editing to create the chat system using HTML -->
         <button id="chatButton" class="open-button btn btn-success fixed-bottom" onclick="openForm(event)" disabled>Chat</button>
         <div id="chatSystem" class="ml-auto invisible fixed-bottom float-right <?php echo $headerFooter?>">
-            <button id="chatButtonClose" class="close-button btn btn-danger" onclick="closeForm(event)"> X </button>
+            <button id="chatButtonClose" class="close-button float-left  btn btn-danger" onclick="closeForm(event)"> X </button>
             <h2 class="<?php echo $textSecondary?>">Chat</h2>
+            <button id="chatButtonEnd" class="close-button btn btn-warning float-right">End Chat</button>
             <div id="chatArea" class="overflow-auto">
 
             </div>

@@ -6,6 +6,12 @@ var fs = require('fs');
 
 // Handle if the user connecting is new or not.
 var newConnection = true;
+const newMessage = {username: "System",message: "Hello and welcome to our chat service. A member of staff will be with you shortly"};
+let roomHistory = {};
+let openRooms = [];
+let allRooms = [];
+
+roomHistory.admin = [];
 
 // Handle the head response.
 function handler (req, res) {
@@ -21,18 +27,52 @@ function handler (req, res) {
 }
 
 // Create an event handler that monitors new connections.
-io.on('connection', function (socket) {
+io.sockets.on('connection', function (socket) {
     // Print a message on the terminal when a new user connects.
     console.log("Someone has connected!");
 
+    socket.on("join" , function(room) {
+        console.log("a")
+        socket.join(room);
+        if (room === "admin") {
+            if (openRooms.length > 0) {
+                io.sockets.in(room).emit("open room", openRooms[0]);
+            }
+            else {
+                console.log(1)
+                io.sockets.in(room).emit("no rooms", true); 
+            }
+        }
+        else io.sockets.in(room).emit("server history", roomHistory[room]);
+    });
+
+    socket.on("leave" , function(room) {
+        socket.leave(room);
+    });
+
+    socket.on("end" , function(room) {
+        io.sockets.in(room).emit("end chat", true);
+        delete roomHistory[room];
+        openRooms = openRooms.filter( value => value !== room );
+        allRooms = allRooms.filter( value => value !== room );
+    });
+
     // When we recieve a message from the client...
     socket.on("client message", function(data) {
-       
         // Print it onto the terminal
-        console.log("Client message recieved: " + data);
+        console.log("Client message recieved: " + data.message);
+
+        if (data.newRoom) {
+            roomHistory[data.roomID] = [];
+            io.sockets.in(data.roomID).emit("server message", newMessage);
+            roomHistory[data.roomID].push(newMessage);
+            openRooms.push(data.roomID);
+            allRooms.push(data.roomID);
+        }
 
         // Send the same message back to the client, but with a different namespace.
-        io.emit("server message", data);
+        io.sockets.in(data.roomID).emit("server message", data);
+        roomHistory[data.roomID].push(data);
     });
 });
 
