@@ -1,16 +1,11 @@
-
-
-<?php
-// Manipulate the body CSS colour here.
-?>
-
 <div class="container">
     <h2 class="<?php echo $textPrimary?>"><b>Reviewed Games</b></h2>
     <div class="row">
         <?php
-        $this->load->library('image_lib');
+        // loop through the results
         foreach ($result as $row)
         {
+            //  Display a card for each game with an image, title and preview of the blurb
             echo '<a href="'.$row->slug.'/" class="ml-auto mr-auto card cardBodyWidth '.$cssBodyClass.' '.$bg.'" style="max-width: min-content; margin: 1%;">
                     <img class="reviewImage card-img-top" src="'.base_url('application/images/'.str_replace(".jpg", ".jpg", $row->image)).'">
                     <div class="card-body style="max-width: 300px;">

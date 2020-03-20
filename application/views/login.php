@@ -1,3 +1,4 @@
+<!-- Login form -->
 <form class="form-signin mr-auto ml-auto" method="post">
       <h1 class="h3 mb-3 font-weight-normal">Please log in</h1>
       <label for="inputEmail" class="sr-only">Username</label>

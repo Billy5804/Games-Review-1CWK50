@@ -1,13 +1,17 @@
+// Javascript version of codeigniter base_url() function
 function getBaseUrl() {
-    return window.location.protocol + "//" + window.location.host + "/Games-Review-1CWK50/";
+    const rootDir = "Games-Review-1CWK50/";
+    return window.location.protocol + "//" + window.location.host + "/" + rootDir;
 }
 
+// return the users detail from the getUserDetails page
 function getUserDetails() {
     return fetch(getBaseUrl()+"getUserDetails")
     .then( res => res.json() )
     .then( data => {return data} )
 }
 
+// Hide or show the search bar when displayed in the nav
 function toggleSearch(e, imagePath) {
     e = e || window.event;
     e.preventDefault();
@@ -25,21 +29,48 @@ function toggleSearch(e, imagePath) {
     }
 }
 
+// show the chat form
 function openForm(e) {
     e = e || window.event;
     e.preventDefault();
     $('#chatSystem').removeClass('invisible');
 }
 
+// hide the chat form
 function closeForm(e) {
     e = e || window.event;
     e.preventDefault();
     $('#chatSystem').addClass('invisible');
 }
 
+// show the support chat and hide the global chat
+function showSupport(e) {
+    e = e || window.event;
+    e.preventDefault();
+    $('#supportChatArea').removeClass('invisible');
+    $('#supportChatForm').removeClass('invisible');
+    $('#chatButtonEnd').removeClass('invisible');
+    $('#globalChatArea').addClass('invisible');
+    $('#globalChatForm').addClass('invisible');
+    $("#chatTitle").html("Support");
+}
+
+// show the global chat and hide the support chat
+function showGlobal(e) {
+    e = e || window.event;
+    e.preventDefault();
+    $('#globalChatArea').removeClass('invisible');
+    $('#globalChatForm').removeClass('invisible');
+    $('#chatButtonEnd').addClass('invisible');
+    $('#supportChatArea').addClass('invisible');
+    $('#supportChatForm').addClass('invisible');
+    $("#chatTitle").html("Global Chat");
+}
+
+// Return time since the passed timestamp
 function elapsedTime(timestamp) {
-    const since = new Date(timestamp).getTime(), //Convert the timestamp into epoch timestamp
-        elapsed = new Date().getTime() - since; //Get the milleseconds elapsed timestamp to the current time
+    const since = new Date(timestamp).getTime(); //Convert the timestamp into epoch timestamp
+    const elapsed = new Date().getTime() - since; //Get the milleseconds elapsed timestamp to the current time
     
     if (elapsed >= 0) {
         // convert the milleseconds to years, months, days etc
@@ -69,6 +100,7 @@ function elapsedTime(timestamp) {
     }
 }
 
+// sets a cookie
 function setCookie(cookieName, cookieValue, validDays) {
     const milliseconds = validDays * 24 * 60 * 60 * 1000;
     let date = new Date();
@@ -77,6 +109,7 @@ function setCookie(cookieName, cookieValue, validDays) {
     document.cookie = encodeURIComponent(cookieName) + "=" + encodeURIComponent(cookieValue) + "; expires=" + expires + "; path=/";
 }
 
+// gets a cookie
 function getCookie(cookieName) {
     cookieName = encodeURIComponent(cookieName) + "=";
     const cookies = document.cookie.split(';');
@@ -88,6 +121,7 @@ function getCookie(cookieName) {
     })[0];
 }
 
+// sets a cookie to expire
 function clearCookie(cookieName) {
     setCookie(cookieName, '', -1);
 }

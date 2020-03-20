@@ -5,7 +5,7 @@
  * Date: 26/04/2019
  * Time: 13:37
  */
-class MY_Loader extends CI_Loader {
+class MY_Loader extends CI_Loader { // chsnged to MY_Loader so that I could use it in controllers
     public function template($template_name, $vars = array(), $return = FALSE)
     {
         if ($return):

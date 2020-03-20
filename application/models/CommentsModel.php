@@ -1,15 +1,25 @@
 <?php
 class CommentsModel extends CI_Model{
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->load->database();
     }
 
-    public function getComments($id = 0)
-    {
-        // You can use the select, from, and where functions to simplify this as seen in Week 13.
-        $query = $this->db->query("SELECT (SELECT username FROM users WHERE userID = gc.userID) AS username, comment, commentTimestamp FROM gamescomments gc JOIN activereviews USING(reviewID) WHERE reviewID = ".$id." AND enableComments = 1 ORDER BY commentTimestamp;");
+    public function getComments($id = 0) {
+        // Sub Query
+        $this->db->select('username')->from('users')->where('userID = gc.userID');
+        $subQuery =  $this->db->get_compiled_select();
+
+        // Main Query
+        $this->db->select('comment, commentTimestamp, ('.$subQuery.') AS username');
+        $this->db->from('gamescomments gc')->join('activereviews', 'reviewID');
+        $this->db->where('reviewID', $id)->where('enableComments', 1);
+        $this->db->order_by('commentTimestamp', 'ASC');
+
+        $query = $query = $this->db->get();
+
+        // print_r($this->db->last_query());
+        
         return $query->result();
     }
 

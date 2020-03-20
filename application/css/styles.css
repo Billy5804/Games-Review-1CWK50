@@ -25,15 +25,23 @@ body {
     transition: width 0.3s, height 0.4s;
 }
 
-#chatArea {
+.invisible {
+    max-width: 0 !important;
+    max-height: 0 !important;
+    z-index: -1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#supportChatArea, #globalChatArea {
     height: 450px;
     width: -WEBKIT-FILL-AVAILABLE;
-    padding-bottom: 0.25rem;
+    margin: 0.25rem 0;
     overflow-wrap: break-word;
     transition: width 0.3s, height 0.4s;
 }
 
-#chatSystem.invisible #chatArea {
+#chatSystem.invisible #supportChatArea, #chatSystem.invisible #globalChatArea {
     height: 0;
 }
 

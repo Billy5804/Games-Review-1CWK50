@@ -1,12 +1,18 @@
 <?php
 class UserModel extends CI_Model {
-    public function __construct()
-    {
+    
+    public function __construct() {
         $this->load->database();
     }
 
     public function checkCredentials($username = null, $password = null) {
-        $query = $this->db->query("SELECT enableDarkMode, isAdmin FROM users WHERE username = '".$username."' AND  password = '".$password."';");
+        // Main Query
+        $this->db->select('enableDarkMode, isAdmin');
+        $this->db->from('users');
+        $this->db->where('username', $username)->where('password', $password);
+
+        $query = $query = $this->db->get();
+
         return $query->result();
     }
 

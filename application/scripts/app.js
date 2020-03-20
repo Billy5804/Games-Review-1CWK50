@@ -2,14 +2,19 @@ var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
 
-// Create a new server using the listen function, specifying the port number here.
+// Run our Node.js / Socket.IO server on port 8080
+app.listen(8080, function() {
+    // Print a messaage om the terminal when the server starts.
+    console.log("Server started.");
+});
 
-// Handle if the user connecting is new or not.
-var newConnection = true;
+
+
 const newMessage = {username: "System",message: "Hello and welcome to our chat service. A member of staff will be with you shortly"};
 let roomHistory = {};
 let openRooms = [];
 let allRooms = [];
+let globalHistory = [];
 
 roomHistory.admin = [];
 
@@ -26,30 +31,34 @@ function handler (req, res) {
         });
 }
 
+
+
 // Create an event handler that monitors new connections.
 io.sockets.on('connection', function (socket) {
     // Print a message on the terminal when a new user connects.
     console.log("Someone has connected!");
 
+    // Join room provided by client and send the rooms history & global history
     socket.on("join" , function(room) {
-        console.log("a")
         socket.join(room);
         if (room === "admin") {
             if (openRooms.length > 0) {
                 io.sockets.in(room).emit("open room", openRooms[0]);
             }
             else {
-                console.log(1)
                 io.sockets.in(room).emit("no rooms", true); 
             }
         }
         else io.sockets.in(room).emit("server history", roomHistory[room]);
+        io.emit("global history", globalHistory);
     });
 
+    // leave room specified by client
     socket.on("leave" , function(room) {
         socket.leave(room);
     });
 
+    // end a chat clear its history from the server and tell the clients to leave the room
     socket.on("end" , function(room) {
         io.sockets.in(room).emit("end chat", true);
         delete roomHistory[room];
@@ -57,11 +66,14 @@ io.sockets.on('connection', function (socket) {
         allRooms = allRooms.filter( value => value !== room );
     });
 
-    // When we recieve a message from the client...
+    // When we recieve a support message from the client...
     socket.on("client message", function(data) {
         // Print it onto the terminal
         console.log("Client message recieved: " + data.message);
 
+        // if this is the first message in a support room
+        // add it to the server to record history and assing staff to it
+        // also send a automated message to the client
         if (data.newRoom) {
             roomHistory[data.roomID] = [];
             io.sockets.in(data.roomID).emit("server message", newMessage);
@@ -72,12 +84,22 @@ io.sockets.on('connection', function (socket) {
 
         // Send the same message back to the client, but with a different namespace.
         io.sockets.in(data.roomID).emit("server message", data);
+        // record the message to the server unless its in the admin room
         roomHistory[data.roomID].push(data);
+        roomHistory.admin = [];
     });
-});
 
-// Run our Node.js / Socket.IO server on port 8080
-app.listen(8080, function() {
-    // Print a messaage om the terminal when the server starts.
-    console.log("Server started.");
+    // When we recieve a global message from the client...
+    socket.on("global client message", function(data) {
+        // check the user is logged in
+        if (data.loggedIn) {
+            // Print it onto the terminal
+            console.log("global message recieved: " + data.message);
+
+            // Send the same message back to the client, but with a different namespace.
+            io.emit("global server message", data);
+            // record the message to the global chat history
+            globalHistory.push(data);
+        }
+    });
 });

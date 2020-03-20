@@ -1,17 +1,36 @@
         </main>
-        <!-- This section needs editing to create the chat system using HTML -->
+        <!-- button to toggle chat screen  -->
         <button id="chatButton" class="open-button btn btn-success fixed-bottom" onclick="openForm(event)" disabled>Chat</button>
+        <!-- chat system -->
         <div id="chatSystem" class="ml-auto invisible fixed-bottom float-right <?php echo $headerFooter?>">
+            <!-- button to close the chat screen -->
             <button id="chatButtonClose" class="close-button float-left  btn btn-danger" onclick="closeForm(event)"> X </button>
-            <h2 class="<?php echo $textSecondary?>">Chat</h2>
+            <h2 id="chatTitle" class="<?php echo $textSecondary?>">Support</h2>
+            <!-- button to end support chat -->
             <button id="chatButtonEnd" class="close-button btn btn-warning float-right">End Chat</button>
-            <div id="chatArea" class="overflow-auto">
+            <div id="chatsArea">
+                <!-- buttons to switch between support and global chats -->
+                <button id="chatButtonSupport" class="close-button  btn btn-success" onclick="showSupport(event)">Support Chat</button>
+                <button id="chatButtonGlobal" class="close-button  btn btn-success invisible" onclick="showGlobal(event)">Global Chat</button>
+                
+                <!-- support chat -->
+                <div id="supportChatArea" class="overflow-auto">
 
+                </div>
+                <form id="supportChatForm" class=" form-inline form-container">
+                    <textarea rows="1" type="text" class="form-control" id="supportMessage" autocomplete="off" ></textarea>
+                    <button class="btn btn-primary float-right" id="sendButton">Send</button>
+                </form>
+
+                <!-- global chat -->
+                <div id="globalChatArea" class="overflow-auto invisible">
+
+                </div>
+                <form id="globalChatForm" class="invisible form-inline form-container">
+                    <textarea rows="1" type="text" class="form-control" id="globalMessage" autocomplete="off" ></textarea>
+                    <button class="btn btn-primary float-right" id="sendGlobalButton">Send</button>
+                </form>
             </div>
-            <form id="chatform" class=" form-inline form-container">
-                <textarea rows="1" type="text" class="form-control" id="message" autocomplete="off" ></textarea>
-                <button class="btn btn-primary float-right" id="sendButton">Send</button>
-            </form>
         </div>
         <!-- Footer -->
         <footer class="page-footer font-small <?php echo $headerFooter?>">
@@ -25,6 +44,7 @@
             <!-- Copyright -->
         </footer>
         <!-- Footer -->
-        <?php echo $alert ?>
+
+        <?php  echo $alert //load any alerts passed from the controller ?>
     </body>
 </html>

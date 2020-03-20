@@ -1,11 +1,11 @@
-
 <div class="container">
     <h2 class="<?php echo $textPrimary?>"><b>Latest Reviews</b></h2>
     <div class="row">
         <?php
-        $this->load->library('image_lib');
+        // loop through the results
         foreach ($result as $row)
         {
+            //  Display a card for each review with an image, title, author and preview of the review
             $username = $row->username;
             if(empty($username)) $username = '<small><del>DELETED USER</del></small>';
 

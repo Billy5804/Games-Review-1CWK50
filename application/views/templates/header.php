@@ -25,14 +25,16 @@
         <script src="<?php echo base_url('application/scripts/customFunctions.js');?>"></script>
     </head>
 <body class="<?php echo $mode?>">
-    <!-- These classes onlywork if you attach Bootstrap. -->
+    <!-- display the nav bar -->
     <nav class="navbar navbar-expand-lg navbar-<?php echo $mode ?> <?php echo $headerFooter ?> fixed-top">
+        <!-- button for collapsiable nav -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <a class="navbar-brand" href="#"><?php echo $title?></a>
         
-
+        <!-- nav bar links -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item <?php echo $reviews ?>">
@@ -43,6 +45,7 @@
                 </li>
                 <?php 
             if ($user) {
+                // logged in links
                 echo '<li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         '.$username.'
@@ -65,6 +68,7 @@
                     </li>';
             }
             else {
+                // unregistered links
                 echo '
                 <li class="nav-item '.$login.' ?>">
                     <form class="nav-link" action="'.base_url('login').'" method="POST">

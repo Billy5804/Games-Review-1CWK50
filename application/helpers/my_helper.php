@@ -3,6 +3,8 @@
 if ( ! function_exists('getColours')){
    function getColours($darkMode = FALSE){
         // Adjust page colours for dark/light mode
+        // style sheet stays the same just uses different classes
+        // defined below and saved to variables for use in the views
         $bg = 'bg-light';
         $headerFooter = $bg;
         $mode = 'light';
