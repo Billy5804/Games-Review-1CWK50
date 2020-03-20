@@ -46,6 +46,8 @@ class Users extends MY_Controller {
                 $this->session->loggedInUser = true;
                 $this->session->username = $username;
 
+                delete_cookie("chatRoom");
+
                 // go back to the last page the user was on before navigating to the login page
                 redirect($previousPage);
             }
@@ -84,6 +86,8 @@ class Users extends MY_Controller {
 
         // set logout to true so the next request can display a logout alert
         $this->session->set_flashdata('logout', true);
+
+        delete_cookie("chatRoom");
 
         // redirect to the previous page if known
         // if not go to home

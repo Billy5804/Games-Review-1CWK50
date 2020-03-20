@@ -9,13 +9,17 @@ $(document).ready(function() {
         $("#sendButton").prop('disabled', false);
         $("#sendGlobalButton").prop('disabled', false);
         const userDetails = await getUserDetails();
-        if (userDetails.loggedIn) 
+        if (userDetails.loggedIn) {
             $("#chatButtonGlobal").removeClass("invisible");
+        }
 
-        if (typeof getCookie("chatRoom") === 'undefined')
+        if (typeof getCookie("chatRoom") === 'undefined') {
             joinNewSupportChat();
-        else 
+        }
+        else {
             socket.emit('join', getCookie("chatRoom"));
+        }
+        socket.emit('get global', true);
     });
 
     // Join new support room / admin waiting room

@@ -38,7 +38,7 @@ io.sockets.on('connection', function (socket) {
     // Print a message on the terminal when a new user connects.
     console.log("Someone has connected!");
 
-    // Join room provided by client and send the rooms history & global history
+    // Join room provided by client and send the rooms history
     socket.on("join" , function(room) {
         socket.join(room);
         if (room === "admin") {
@@ -50,6 +50,11 @@ io.sockets.on('connection', function (socket) {
             }
         }
         else io.sockets.in(room).emit("server history", roomHistory[room]);
+        
+    });
+
+    // send global history
+    socket.on("get global", function(){
         io.emit("global history", globalHistory);
     });
 

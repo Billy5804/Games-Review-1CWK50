@@ -69,5 +69,11 @@ class ReviewsModel extends CI_Model{
 
         return $query->result();
     }
+
+    // public function search($query = null) {
+    //     $this->db->select('reviewID, image, name, review, blurb, enableComments, ('.$subQuery.') AS username');
+    //     $this->db->from('activereviews ar')->join('games', 'gameID');
+    //     $this->db->where('reviewID', $id);
+    // }
 }
 ?>
